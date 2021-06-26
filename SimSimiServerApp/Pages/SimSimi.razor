@@ -3,15 +3,15 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-8 offset-2">
-            <div class="card" style="height:500px">
+        <div class="col">
+            <div class="card" style="height:600px">
                 <div class="card-header">
+                    <span class="oi oi-chat"></span>
                     <span class="card-title">Chatea con SimSimi</span>
                 </div>
                 <div class="card-body d- justify-content-end flex-column overflow-auto">
                     @foreach (var message in _simSimiAPI.Messages)
                     {
-                        Console.WriteLine("***rediseñando los mensajes del chat***");
                         if (message.User == "Me")
                         {
                             <div class="text-left">
@@ -39,7 +39,9 @@
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Message..." @bind-value="_message" @bind-value:event="oninput" @onkeydown="OnMessagekeyDown">
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-primary" @onclick="SendMessageToSimSimi">>>></button>
+                            <button type="button" class="btn btn-primary" @onclick="SendMessageToSimSimi">
+                                <span class="oi oi-comment-square"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -57,23 +59,21 @@
     {
     }
 
-    private async Task OnMessagekeyDown(KeyboardEventArgs args)
-    {
-        if (args.Key == "Enter")
-        {
-            await SendMessageToSimSimi();
-        }
-    }
-
     private async Task SendMessageToSimSimi()
     {
         if (!string.IsNullOrEmpty(_message))
         {
             var message = _message;
-
             _message = string.Empty;
-
             var result = await _simSimiAPI.SendMessage(message);
+        }
+    }
+
+    private async Task OnMessagekeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            await SendMessageToSimSimi();
         }
     }
 
